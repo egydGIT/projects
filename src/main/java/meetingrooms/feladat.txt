@@ -1,0 +1,48 @@
+Készíts egy programot, mely egy irodaházban lévő tárgyalókat tartja nyilván!
+Először kérd be a felhasználótól, hogy hány darab tárgyalót szeretne rögzíteni.
+Majd kérd be minden tárgyalóhoz a következő adatokat:
+• Tárgyaló neve
+• Tárgyaló szélessége méterben
+• Tárgyaló hosszúsága méterben
+
+Majd írj ki a felhasználónak egy menüt, a következőképp:
+1. Tárgyalók sorrendben
+2. Tárgyalók visszafele sorrendben
+3. Minden második tárgyaló
+4. Területek
+5. Keresés pontos név alapján
+6. Keresés névtöredék alapján
+7. Keresés terület alapján
+
+Majd kérj be a felhasználótól egy számot!
+Hajtsd végre a számhoz tartozó funkciót.
+
+• Tárgyalók sorrendben: csak a neveket kell kiírni olyan sorrendben, ahogy a felhasználó beírta
+• Tárgyalók visszafele sorrendben: csak a neveket kell kiírni fordított sorrendben, ahogy a felhasználó beírta
+• Minden második tárgyaló: minden második tárgyaló nevét kell kiírni
+• Területek: ki kell írni minden tárgyaló nevét, szélességét, hosszúságát és területét
+• Keresés pontos név alapján: kérj be a felhasználótól egy nevet, és annak a tárgyalónak írd ki a szélességét,
+    hosszúságát és területét, melynek ez a neve. Ha nincs ilyen nevű, nem kell kiírni semmit.
+• Keresés névtöredék alapján: kérj be a felhasználótól egy névtöredéket, és annak a tárgyalónak írd ki a szélességét,
+    hosszúságát és területét, amelynek a nevében benne van ez a névtöredék! Ne számítson a kis- és nagybetű különbség!
+• Keresés terület alapján: kérj be egy egész számot, és csak azoknak a tárgyalóknak írd ki a nevét, szélességét,
+    hosszúságát és területét, melyeknek a területe nagyobb, mint a felhasználó által beírt terület!
+
+Osztályok
+
+Dolgozz a week02 csomagba!
+
+A Controller osztálynak
+legyen egy main() metódusa, mely példányosít egy Controller példányt, és rendre meghívja annak metódusait.
+A readOffice() példányosít egy Office objektumot, eltárolja az attribútumába.
+Majd bekéri a tárgyalókat egy ciklusban, MeetingRoom objektumokat példányosít, majd a addMeetingRoom() metódussal
+beteszi az Office példányba.
+A printMenu() metódus kiírja a menüt.
+A runMenu() bekéri a felhasználótól a menüpont számát, majd egy elágazás alapján meghívja az Office megfelelő metódusát.
+Ha annak kell paraméter, akkor azt ez a metódus kéri be a felhasználótól.
+
+Az Office metódusai rendre megvalósítják a leírt funkciókat.
+Ciklusokkal és feltételekkel dolgoznak.
+
+A MeetingRoom egy egyszerű osztály,
+három attribútummal. Van egy getArea() metódusa, mely kiszámolja a tárgyaló területét.
