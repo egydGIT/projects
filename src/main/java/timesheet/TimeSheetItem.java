@@ -11,16 +11,20 @@ public class TimeSheetItem {
     private LocalDateTime endDate;
 
     public TimeSheetItem(Employee employee, Project project, LocalDateTime beginDate, LocalDateTime endDate) {
+        checkParam(beginDate, endDate);
+        this.employee = employee;
+        this.project = project;
+        this.beginDate = beginDate;
+        this.endDate = endDate;
+    }
+
+    private void checkParam(LocalDateTime beginDate, LocalDateTime endDate) {
         if (endDate.isBefore(beginDate)) {
             throw new IllegalArgumentException("End date (" + endDate + ") can not be before begin date (" + beginDate + ")! ");
         }
         if (!beginDate.toLocalDate().equals(endDate.toLocalDate())) {
             throw new IllegalArgumentException("Begin date (" + beginDate + ") must be in the same day, as end date (" + endDate + ")! ");
         }
-        this.employee = employee;
-        this.project = project;
-        this.beginDate = beginDate;
-        this.endDate = endDate;
     }
 
     public long hoursBetweenDates() {
