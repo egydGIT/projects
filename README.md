@@ -6,5 +6,5 @@ javaBackend subrepo
 - [x] [modul 2](https://github.com/egydGIT/projects/tree/master/src/main/java/schoolrecords) - Enapló
 - [ ] [modul 3]() - Könyvtárkatalógus
 - [x] [modul 4](https://github.com/egydGIT/projects/tree/master/src/main/java/activity) - Activity Tracker
-- [ ] [modul 5]() - Timesheet
+- [x] [modul 5](https://github.com/egydGIT/projects/tree/master/src/main/java/timesheet) - Timesheet
 
