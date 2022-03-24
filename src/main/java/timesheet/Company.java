@@ -3,7 +3,7 @@ package timesheet;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.Collator;
+//import java.text.Collator;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -12,7 +12,6 @@ public class Company {
     private List<Employee> employees = new ArrayList<>();
     private List<Project> projects = new ArrayList<>();
     private List<TimeSheetItem> timeSheetItems = new ArrayList<>();
-//    private List<ReportLine> reportLines = new ArrayList<>();
 
     public Company(InputStream employeeFile, InputStream projectFile) {
         readEmployeeFile(employeeFile);
@@ -47,57 +46,87 @@ public class Company {
         timeSheetItems.add(timeSheetItem);
     }
 
-//    public List<ReportLine> calculateProjectByNameYearMonth(String employeeName, int year, int month) {
-//        if (!containsEmployee(employees, employeeName)) {
-//            throw new IllegalArgumentException("There is no employee with this name. ");
-//        }
-//        Map<Project, ReportLine> filtered = new HashMap<>();
-//        for (Project project : projects) {
-//            filtered.put(project, new ReportLine(project, 0L));
-//        }
-//        for (TimeSheetItem item : timeSheetItems) {
-//            if (item.getEmployee().getName().equals(employeeName)
-//                && item.getBeginDate().getYear() == year
-//                && item.getBeginDate().getMonthValue() == month) {
-//                    ReportLine reportLine = filtered.get(item.getProject());
-//                    reportLine.addTime(item.hoursBetweenDates());
-//            }
-//        }
-//        List<ReportLine> result = new ArrayList<>(filtered.values());
-////        System.out.println(result);
-////        [ReportLine{project=Project{name='Java'}, time=10},
-////        ReportLine{project=Project{name='C++'}, time=4},
-////        ReportLine{project=Project{name='Haskell'}, time=0},
-////        ReportLine{project=Project{name='C#'}, time=0}]
-//        return result;                                        // project sorrend elveszik
-//    }
-
-    public List<ReportLine> calculateProjectByNameYearMonth(String employeeName, int year, int month) {
+    public List<ReportLine> calculateProjectByNameYearMonth(String employeeName, int year, int month) {     // with Map
         if (!containsEmployee(employees, employeeName)) {
             throw new IllegalArgumentException("There is no employee with this name. ");
         }
-        List<ReportLine> reportLines = new ArrayList<>();
-        for (Project project : projects) {
-            ReportLine reportLine = new ReportLine(project, 0);
-            reportLines.add(reportLine);
+        Map<Project, ReportLine> temporaryMap = new HashMap<>();
+        fillKeys(temporaryMap);
+        fillValueWithFilteredData(employeeName, year, month, temporaryMap);
+        List<ReportLine> result = new ArrayList<>(temporaryMap.values());
+        List<ReportLine> orderedResult = orderResult(result);
+        return orderedResult;
+    }
+
+    private List<ReportLine> orderResult(List<ReportLine> result) {
+        List<ReportLine> orderedResult = new ArrayList<>();
+        for (int i = 0; i < projects.size(); i++) {
+            for (ReportLine line : result) {
+                if (projects.get(i).getName().equals(line.getProject().getName())) {
+                    orderedResult.add(line);
+                }
+            }
         }
-        List<TimeSheetItem> filteredForParams = new ArrayList<>();
+        return orderedResult;
+    }
+
+    private void fillValueWithFilteredData(String employeeName, int year, int month, Map<Project, ReportLine> temporaryMap) {
         for (TimeSheetItem item : timeSheetItems) {
             if (item.getEmployee().getName().equals(employeeName)
                 && item.getBeginDate().getYear() == year
                 && item.getBeginDate().getMonthValue() == month) {
-                filteredForParams.add(item);
+                    ReportLine reportLine = temporaryMap.get(item.getProject());
+                    reportLine.addTime(item.hoursBetweenDates());
             }
         }
-        for (TimeSheetItem item : filteredForParams) {
-            for (ReportLine line : reportLines) {
-                if (item.getProject().getName().equals(line.getProject().getName())) {
-                    line.addTime(item.hoursBetweenDates());
-                }
-            }
-        }
-        return reportLines;
     }
+
+    private void fillKeys(Map<Project, ReportLine> temporaryMap) {
+        for (Project project : projects) {
+            temporaryMap.put(project, new ReportLine(project, 0L));
+        }
+    }
+
+//    public List<ReportLine> calculateProjectByNameYearMonth(String employeeName, int year, int month) {   // with List
+//        if (!containsEmployee(employees, employeeName)) {
+//            throw new IllegalArgumentException("There is no employee with this name. ");
+//        }
+//        List<ReportLine> reportLines = createInitialReportLines();
+//        List<TimeSheetItem> filteredForParams = filterTimeSheetItemsForParam(employeeName, year, month);
+//        fillInitialReportLinesWithData(reportLines, filteredForParams);
+//        return reportLines;
+//    }
+//
+//    private void fillInitialReportLinesWithData(List<ReportLine> reportLines, List<TimeSheetItem> filteredForParams) {
+//        for (TimeSheetItem item : filteredForParams) {
+//            for (ReportLine line : reportLines) {
+//                if (item.getProject().getName().equals(line.getProject().getName())) {
+//                    line.addTime(item.hoursBetweenDates());
+//                }
+//            }
+//        }
+//    }
+//
+//    private List<TimeSheetItem> filterTimeSheetItemsForParam(String employeeName, int year, int month) {
+//        List<TimeSheetItem> filteredForParams = new ArrayList<>();
+//        for (TimeSheetItem item : timeSheetItems) {
+//            if (item.getEmployee().getName().equals(employeeName)
+//                && item.getBeginDate().getYear() == year
+//                && item.getBeginDate().getMonthValue() == month) {
+//                filteredForParams.add(item);
+//            }
+//        }
+//        return filteredForParams;
+//    }
+//
+//    private List<ReportLine> createInitialReportLines() {
+//        List<ReportLine> reportLines = new ArrayList<>();
+//        for (Project project : projects) {
+//            ReportLine reportLine = new ReportLine(project, 0);
+//            reportLines.add(reportLine);
+//        }
+//        return reportLines;
+//    }
 
     private boolean containsEmployee(List<Employee> employees, String employeeName) {
         boolean contains = false;
