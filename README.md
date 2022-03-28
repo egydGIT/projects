@@ -1,5 +1,5 @@
 # projects
-javaBackend subrepo
+#### [javaBackend](https://github.com/egydGIT/javaBackend) subrepo
 
 ### Projekt feladatok
 - [x] [modul 1](https://github.com/egydGIT/projects/tree/master/src/main/java/meetingrooms) - Tárgyalók
